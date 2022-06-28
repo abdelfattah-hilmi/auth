@@ -51,3 +51,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.user_name
+
+
+class Device(models.Model):
+
+    class DeviceTypes(models.TextChoices):
+        ULTRASONIC = "SON", "Ultrasonic"
+        GASSENSOR = "GAS", "Gassensor"
+        LIGHTSENSOR = "LIGHT", "Lightsensor"
+        HUMIDITYSENSOR = "HUM", "HumiditySensor"
+        
+    name = models.CharField(max_length=150, unique=True, blank=False, null=False)
+    type = models.CharField(choices=DeviceTypes.choices, blank=False, null=False)
+    reference = models.CharField(max_length=150)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    data = models.TextField(max_length=1500)
+    description = models.TextField(max_length=500, blank=True)
