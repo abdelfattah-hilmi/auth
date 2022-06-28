@@ -62,7 +62,7 @@ class Device(models.Model):
         HUMIDITYSENSOR = "HUM", "HumiditySensor"
         
     name = models.CharField(max_length=150, unique=True, blank=False, null=False)
-    type = models.CharField(choices=DeviceTypes.choices, blank=False, null=False)
+    type = models.CharField(max_length=5,choices=DeviceTypes.choices, blank=False, null=False)
     reference = models.CharField(max_length=150)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     data = models.TextField(max_length=1500)
