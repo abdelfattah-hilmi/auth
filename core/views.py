@@ -5,16 +5,25 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class UserRegister(CreateAPIView):
-    # permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 class DevicesListView(ListCreateAPIView):
-    queryset = Device.objects.all()
+    permission_classes = [IsAuthenticated]
+    # queryset = Device.objects.all()
     serializer_class = DeviceSerializer
+    def get_queryset(self):
+        return Device.objects.filter(owner=self.request.user)
+
+
 
 class DeviceView(RetrieveUpdateDestroyAPIView):
-    queryset = Device.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    # queryset = Device.objects.all()
     serializer_class = DeviceSerializer
     lookup_field = 'id'
     lookup_url_kwarg = 'id'
+
+    def get_queryset(self):
+        return Device.objects.filter(owner=self.request.user)
