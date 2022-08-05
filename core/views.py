@@ -10,20 +10,24 @@ class UserRegister(CreateAPIView):
 
 class DevicesListView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    # queryset = Device.objects.all()
     serializer_class = DeviceSerializer
+
     def get_queryset(self):
         return Device.objects.filter(owner=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.validated_data["owner"] = self.request.user
+        return super().perform_create(serializer)
+    
 
 
 
 class DeviceView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-
-    # queryset = Device.objects.all()
     serializer_class = DeviceSerializer
     lookup_field = 'id'
     lookup_url_kwarg = 'id'
 
     def get_queryset(self):
         return Device.objects.filter(owner=self.request.user)
+    
