@@ -60,6 +60,7 @@ class Device(models.Model):
         GASSENSOR = "GAS", "Gassensor"
         LIGHTSENSOR = "LIGHT", "Lightsensor"
         HUMIDITYSENSOR = "HUM", "HumiditySensor"
+        OTHER = "OTH","Other"
         
     name = models.CharField(max_length=150, unique=True, blank=False, null=False)
     type = models.CharField(max_length=5,choices=DeviceTypes.choices, blank=False, null=False)
@@ -67,3 +68,8 @@ class Device(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     data = models.TextField(max_length=1500)
     description = models.TextField(max_length=500, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"DEVICE {self.id}"
